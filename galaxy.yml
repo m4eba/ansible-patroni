@@ -1,0 +1,14 @@
+namespace: m4eba
+name: patroni
+version: 0.0.1
+readme: README.md
+authors:
+  - m4eba
+description: An ansible collection to install patroni.
+license:
+  - MIT
+license_file: 'LICENSE'
+tags: ['patroni']
+dependencies: { community.crypto: '>=2.0.0' }
+repository: http://github.com/m4eba/patroni
+issues: http://github.com/m4eba/patroni/issues

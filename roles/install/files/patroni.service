@@ -1,0 +1,28 @@
+[Unit]
+Description=Runners to orchestrate a high-availability PostgreSQL
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+User=postgres
+Group=postgres
+
+WorkingDirectory=/var/lib/patroni
+
+# see https://github.com/zalando/patroni/issues/1468
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/postgresql/12/bin/
+
+ExecStart=/usr/local/bin/patroni /etc/patroni/patroni.yml
+
+# Send HUP to reload from patroni.yml
+ExecReload=/bin/kill -s HUP $MAINPID
+
+KillMode=process
+
+TimeoutSec=30
+
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

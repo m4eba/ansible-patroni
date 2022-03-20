@@ -1,0 +1,8 @@
+patroni_namespace: /service
+patroni_cluster_name: patroni
+patroni_data_dir: /var/lib/patroni
+patroni_etcd_protocol: http
+patroni_replication_username: replicator
+patroni_replication_password: password
+patroni_superuser_username: postgres
+patroni_superuser_password: password
