@@ -1,0 +1,17 @@
+listen patroni_write
+    bind {{ keepalived_virtual_ip }}:5000
+    option httpchk OPTIONS/master
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+{% for s in groups['patroni'] %}    
+    server {{ s }} {{ hostvars[s].patroni_ip }}:5432 maxconn 100 check port 8008
+{% endfor %}   
+ 
+listen patroni_read
+    bind {{ keepalived_virtual_ip }}:5001
+    option httpchk OPTIONS/replica
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+{% for s in groups['patroni'] %}    
+    server {{ s }} {{ hostvars[s].patroni_ip }}:5432 maxconn 100 check port 8008
+{% endfor %}  

@@ -1,0 +1,8 @@
+---
+- name: copy haproxy config
+  ansible.builtin.template:
+    src: patroni.cfg.j2
+    dest: /etc/haproxy/patroni.cfg
+    owner: root
+    group: root
+    mode: 0644
