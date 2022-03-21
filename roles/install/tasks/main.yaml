@@ -1,5 +1,5 @@
 - name: Install packages
-  apt:
+  ansible.builtin.apt:
     pkg:
       - postgresql-common
       - python3-pip
@@ -9,22 +9,22 @@
       - gcc
     update_cache: true
 - name: disbable initializing of default postgres cluster
-  replace:
+  ansible.builtin.replace:
     path: /etc/postgresql-common/createcluster.conf
     replace: create_main_cluster = false
     regexp: ^#?create_main_cluster.*$
 - name: install postgres
-  apt:
+  ansible.builtin.apt:
     pkg:
       - postgresql
       - postgresql-client
 - name: install python lib
-  pip:
+  ansible.builtin.pip:
     name:
       - patroni
       - python-etcd
 - name: patroni directory
-  file:
+  ansible.builtin.file:
     path: /etc/patroni
     state: directory
     owner: root
@@ -32,14 +32,14 @@
     mode: 0655
 
 - name: patroni template
-  template:
+  ansible.builtin.template:
     src: 'patroni.yaml.j2'
     dest: /etc/patroni/patroni.yml
     owner: root
     group: root
     mode: '0644'
 - name: create data directory
-  file:
+  ansible.builtin.file:
     path: '{{ patroni_data_dir }}'
     owner: postgres
     group: postgres
@@ -47,12 +47,12 @@
     recurse: yes
     mode: '0700'
 - name: copy service file
-  copy:
+  ansible.builtin.copy:
     src: 'patroni.service'
     dest: /etc/systemd/system/patroni.service
     mode: 0755
 - name: start patroni
-  systemd:
+  ansible.builtin.systemd:
     name: patroni
     state: started
     enabled: yes
